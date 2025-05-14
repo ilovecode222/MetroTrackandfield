@@ -1,0 +1,25 @@
+<% if @athlete.errors.any? %>
+
+  <div class="alert alert-danger">
+    <h4><%= pluralize(@athlete.errors.count, "error") %> prohibited this athlete from being saved:</h4>
+    <ul>
+      <% @athlete.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+  <% if logged_in? %>
+
+<p style="color: green"><%= notice %></p>
+
+<%= render @athlete %>
+
+<div>
+  <%= link_to "Edit this athlete", edit_athlete_path(@athlete) %> |
+  <%= link_to "Back to athletes", athletes_path %>
+
+  <%= button_to "Destroy this athlete", @athlete, method: :delete %>
+</div>
+
+<%end%>

@@ -1,0 +1,32 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Athletes" %>
+
+<h1>Athletes</h1>
+<div class="mt-4">
+  <%= link_to "New Athlete", new_athlete_path, class: "btn btn-success" %>
+</div>
+<div class="row row-cols-1 row-cols-md-3 g-4" id="athletes">
+  <% @athletes.each do |athlete| %>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><%= athlete.name %></h5>
+          <p class="card-text">
+            <strong>School:</strong> <%= athlete.school %><br>
+            <strong>Date of Graduation:</strong>
+            <% if athlete.grade.present? %>
+              <%= Date.parse(athlete.grade.to_s).year rescue athlete.grade %>
+            <% else %>
+              N/A
+            <% end %>
+          </p>
+
+          <%= link_to "View Athlete", athlete_path(athlete), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+

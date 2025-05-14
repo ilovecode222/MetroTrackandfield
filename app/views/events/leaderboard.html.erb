@@ -1,0 +1,59 @@
+<% extend ResultsHelper %>
+
+<% current_year = Time.zone.now.year %>
+<h1>Top 15 All Time Performance List</h1>
+
+<% @events.each do |event| %>
+  <h2 class="mt-4"><%= event.name %></h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Place</th>
+        <th>Athlete</th>
+        <th>Grade</th>
+        <th>School</th>
+        <th>Mark</th>
+        <th>Date</th>
+        <th>Achievement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% event.results
+           .select { |r| r.performance =~ /^\d+(:\d{2})?(\.\d+)?$/ } # Only include valid numeric times
+           .sort_by { |r| convert_to_seconds(r.performance) }
+           .first(15).each_with_index do |result, index| %>
+        <% athlete = result.athlete %>
+        <% graduation_year = athlete.grade.year if athlete.grade %>
+        <% grade_label = 
+          if graduation_year - current_year == 3
+            "Freshman"
+          elsif graduation_year - current_year == 2
+            "Sophomore"
+          elsif graduation_year - current_year == 1
+            "Junior"
+          elsif graduation_year - current_year == 0
+            "Senior"
+          elsif graduation_year - current_year > 3
+            "Middle Schooler"
+          else
+            "N/A"
+          end %>
+        
+        <% personal_best = event.results
+                              .where(athlete: result.athlete)
+                              .pluck(:performance)
+                              .select { |p| p =~ /^\d+(:\d{2})?(\.\d+)?$/ }
+                              .min_by { |p| convert_to_seconds(p) } %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= athlete.name %></td>
+          <td><%= grade_label %></td>
+          <td><%= athlete.school %></td>
+          <td><%= result.performance %></td>
+          <td><%= result.date.strftime('%B %d, %Y') if result.date %></td>
+          <td><%= 'PR' if result.performance == personal_best %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

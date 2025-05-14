@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Toy App" %></title>
+    <title><%= content_for(:title) || "METRO League Track and Field" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -21,33 +21,36 @@
     <header class="text-bg-dark">
       <div class="container-fluid">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a class="navbar-brand" href="<%= home_index_url %>"><%= image_tag("icon.png", alt:"TOYAPP", :class => "navbar-icon")%> Toy App</a>
+          <a class="navbar-brand" href="<%= home_index_url %>"><%= image_tag("icon.png", alt:"TOYAPP", :class => "navbar-icon")%> METRO League Track and Field</a>
 
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="<%= microposts_url %>"><i class="bi bi-journals"></i> MicroPosts</a>
+            <a class="nav-link" aria-current="page" href="<%= leaderboard_events_path	 %>"><i class="bi bi-journals"></i> Top 15 All Time</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<%= users_url %>"><i class="bi bi-people-fill"></i> Users</a>
+              <a class="nav-link" href="<%= meets_results_path %>"><i class="bi bi-people-fill"></i> Race Results</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="<%= home_about_url %>"><i class="bi bi-info-circle"></i> About</a>
             </li>
+            <% if logged_in? %>
             <li class="nav-item">
-              <a class="nav-link" href="<%= home_help_url %>"><i class="bi bi-person-raised-hand"></i> Help</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="<%= home_contactus_url %>"><i class="bi bi-person-rolodex"></i> Contact Us</a>
-            </li>
+            <a class="nav-link" href="<%= new_athlete_path %>"><i class="bi bi-info-circle"></i> Register Athlete</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="<%= new_result_path %>"><i class="bi bi-info-circle"></i> Add Results</a>
+        </li>
+          <% end %>
+
           </ul>
 
           <div class="text-end">
             <% if !logged_in? %>
-              <a href="<%= login_path %>" class="btn btn-outline-light me-2"><i class="bi bi-pencil-square"></i> Sign In</a>
-              <a href="<%= new_user_path %>" class="btn btn-warning my-2"><i class="bi bi-pencil-square"></i> Sign Up</a>
+              <a href="<%= login_path %>" class="btn btn-outline-light me-2"><i class="bi bi-pencil-square"></i> Coach Sign In</a>
             <% else %>
+                          <a href="<%= new_user_path %>" class="btn btn-warning my-2"><i class="bi bi-pencil-square"></i> Make New Account</a>
               <a href="<%= user_path current_user %>" class="btn btn-warning my-2"><i class="bi bi-person-badge"></i> <%= current_user.name %></a>
-              
+
               <%= link_to "<i class='bi bi-box-arrow-right'></i> Log Out".html_safe, logout_path, data: {turbo_method: :delete, method: :delete }, class: "btn btn-danger my-2" %>            
 
             <% end %>

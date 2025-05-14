@@ -1,0 +1,130 @@
+<%= form_with(model: @result, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :athlete_id, "Select Athlete" %>
+
+    <!-- Custom Dropdown -->
+    <div class="dropdown" id="athleteDropdownWrapper">
+      <button type="button" onclick="toggleDropdown()" class="dropbtn" id="dropdownButton">Select Athlete</button>
+      <div id="athleteDropdown" class="dropdown-content">
+        <input type="text" placeholder="Search..." id="athleteSearch" onkeyup="filterAthletes()">
+        <% Athlete.all.each do |athlete| %>
+          <a href="#" data-id="<%= athlete.id %>" onclick="selectAthlete('<%= j athlete.name %>', <%= athlete.id %>)"><%= athlete.name %></a>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Hidden field to actually store the athlete_id -->
+    <%= form.hidden_field :athlete_id, id: "result_athlete_id" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :event_id, "Event" %>
+    <%= form.collection_select :event_id, Event.all, :id, :name, prompt: "Select Event" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :performance %>
+    <%= form.text_field :performance %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date %>
+    <%= form.date_select :date, default: {
+      year: Time.zone.now.year,
+      month: Time.zone.now.month,
+      day: Time.zone.now.day
+    } %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<style>
+/* Dropdown styles */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 250px;
+}
+
+.dropbtn {
+  background-color: #f0f0f0;
+  color: black;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  z-index: 1000;
+}
+
+.dropdown-content input {
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.dropdown-content a {
+  padding: 6px;
+  display: block;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+.dropdown-content a:hover {
+  background-color: #eee;
+}
+
+.show {
+  display: block;
+}
+</style>
+
+<script>
+  function toggleDropdown() {
+    document.getElementById("athleteDropdown").classList.toggle("show");
+  }
+
+  function filterAthletes() {
+    const input = document.getElementById("athleteSearch");
+    const filter = input.value.toUpperCase();
+    const div = document.getElementById("athleteDropdown");
+    const links = div.getElementsByTagName("a");
+
+    for (let i = 0; i < links.length; i++) {
+      const txtValue = links[i].textContent || links[i].innerText;
+      links[i].style.display = txtValue.toUpperCase().includes(filter) ? "" : "none";
+    }
+  }
+
+  function selectAthlete(name, id) {
+    document.getElementById("dropdownButton").innerText = name;
+    document.getElementById("result_athlete_id").value = id;
+    document.getElementById("athleteDropdown").classList.remove("show");
+  }
+
+  // Close dropdown if clicking outside
+  document.addEventListener("click", function(event) {
+    const dropdown = document.getElementById("athleteDropdownWrapper");
+    if (!dropdown.contains(event.target)) {
+      document.getElementById("athleteDropdown").classList.remove("show");
+    }
+  });
+</script>

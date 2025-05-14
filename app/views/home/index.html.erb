@@ -1,25 +1,63 @@
+<% if logged_in? %>
+
 <section class="py-5 text-center container">
 	<div class="row py-lg-5">
 	  <div class="col-lg-6 col-md-8 mx-auto">
-	    <h1 class="fw-light">Welcome to the best Toy-App in the World</h1>
-	    <p class="lead text-body-secondary">We, rather, proudly, have <%= @user_count %> users and <%= @post_count %> micro posts!</p>
-	    <p>
-	      <a href="<%= users_url %>" class="btn btn-primary my-2"><i class="bi bi-people-fill"></i> Meet Our Users</a>
-	      <a href="<%= microposts_url %>" class="btn btn-secondary my-2"><i class="bi bi-journals"></i> Read Our MicroPosts</a>
+	    <h1 class="fw-light">Welcome Coach</h1>
 
-	      <!-- 
-	      <% if !logged_in? %>
-	      	<a href="<%= login_path %>" class="btn btn-success my-2"><i class="bi bi-pencil-square"></i> Sign In</a>
-	      	<a href="<%= new_user_path %>" class="btn btn-success my-2"><i class="bi bi-pencil-square"></i> Sign Up</a>
-	      <% else %>
+		  <p>
+				Hi!
+
+			Welcome to the track and field results website (made by Wesley Schreiber)
+
+			<div>
+
+			Before each meet make sure all your athletes are in the system by clicking "Register Athlete" on the top right.
+
+
+			<div>
+			You will be able to add results using the "Add Results" button on the top right.
+
+			<div>
+
+			If you need to create a coach login for another coach click the "make new account" button and enter the details for the login. You will need to share those login details with that coach as I was too lazy to make a reset password button.
+
+
+		  </p>
+	      	<a href="<%= new_user_path %>" class="btn btn-success my-2"><i class="bi bi-pencil-square"></i> Make New Account</a>
 	      	<a href="<%= user_path current_user %>" class="btn btn-success my-2"><i class="bi bi-pencil-square"></i> <%= current_user.name %></a>
 	      	
 	      	<%= button_to "<i class='bi bi-trash'></i> Log Out".html_safe, {:controller => :sessions, :action => 'destroy'}, method: :delete, class: "btn btn-danger" %>
 
-	      <% end %>
-	      -->
+	      
 	      
 	    </p>
 	  </div>
 	</div>
 </section>
+<%else%>
+  <!-- Main Content -->
+  <div class="container">
+    <h2>Track and Field Results - Frequently Asked Questions</h2>
+
+    <div class="question">Q1: What is this website about?</div>
+    <div class="answer">This website displays the track and field results and METRO league records.</div>
+
+    <div class="question">Q2: Who made this website?</div>
+    <div class="answer">This website was made by Wesley Schreiber.</div>
+
+    <div class="question">Q3: How do I access today's race results?</div>
+    <div class="answer">
+      Click on "Race Results" in the navigation bar at the top of the page. 
+      Please note that results may not be updated until 24 hours after the meet.
+    </div>
+
+    <div class="question">Q4: How do I access the METRO league records?</div>
+    <div class="answer">
+      Click on "Top 15" in the navigation bar at the top of the page. 
+      Please note that results may not be updated until 24 hours after the meet.
+    </div>
+  </div>
+
+
+  	      <% end %>

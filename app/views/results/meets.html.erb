@@ -1,0 +1,109 @@
+<% extend ResultsHelper %>
+
+<h1>Meet Results by Date</h1>
+
+<!-- Nav tabs for each meet -->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <% @meets.sort.reverse.each_with_index do |(date, results), index| %>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link <%= 'active' if index == 0 %>" id="meet-<%= index + 1 %>-tab" data-bs-toggle="tab" href="#meet-<%= index + 1 %>" role="tab" aria-controls="meet-<%= index + 1 %>" aria-selected="true">
+        Meet <%= @meets.size - index %> - <%= date.strftime("%B %d, %Y") %>
+      </a>
+    </li>
+  <% end %>
+</ul>
+
+<!-- Tab panes for each meet's results -->
+<div class="tab-content" id="myTabContent">
+  <% @meets.sort.reverse.each_with_index do |(date, results), index| %>
+    <div class="tab-pane fade <%= 'show active' if index == 0 %>" id="meet-<%= index + 1 %>" role="tabpanel" aria-labelledby="meet-<%= index + 1 %>-tab">
+      <div class="container mt-3">
+        <% results.group_by(&:event).each do |event, event_results| %>
+          <h3><%= event.name %></h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Place</th>
+                <th>Athlete</th>
+                <th>School</th>
+                <th>Grade</th>
+                <th>Performance</th>
+                <th>Achievement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% sorted_event_results = event_results.sort_by do |result| %>
+                <% performance = result.performance %>
+                <% numeric = performance.match(/^\d+(:\d+)?(\.\d+)?$/) %>
+                <% numeric ? convert_to_seconds(performance) : Float::INFINITY %>
+              <% end %>
+
+              <% sorted_event_results.each_with_index do |result, index| %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= result.athlete.name %></td>
+                  <td><%= result.athlete.school %></td>
+                  <td>
+                    <% graduation_year = result.athlete.grade.year %>
+                    <% current_year = Date.today.year %>
+<% grade_label =
+  if graduation_year - current_year == 3
+    "Freshman"
+  elsif graduation_year - current_year == 2
+    "Sophomore"
+  elsif graduation_year - current_year == 1
+    "Junior"
+  elsif graduation_year - current_year == 0
+    "Senior"
+  elsif graduation_year - current_year > 3
+    "Middle Schooler"
+  else
+    "N/A"
+  end %>
+<%= grade_label %>
+
+                  </td>
+
+                  <td><%= result.performance %></td>
+                  <td>
+                    <% achievements = [] %>
+
+                    <% pr = result.athlete.results
+                            .where(event_id: result.event_id)
+                            .minimum(:performance) == result.performance %>
+                    <% achievements << "PR" if pr %>
+
+                    <% # Only include numeric performances in calculations %>
+                    <% current_perf = result.performance %>
+                    <% numeric_perf = current_perf.match(/^\d+(:\d+)?(\.\d+)?$/) %>
+
+                    <% if numeric_perf %>
+                      <% current_seconds = convert_to_seconds(current_perf) %>
+
+                      <% all_event_results = Result.where(event_id: result.event_id).includes(:athlete) %>
+                      <% valid_results = all_event_results.select { |r| r.performance.match(/^\d+(:\d+)?(\.\d+)?$/) } %>
+                      <% all_seconds = valid_results.map { |r| convert_to_seconds(r.performance) }.sort %>
+
+                      <% if all_seconds.index(current_seconds) && all_seconds.index(current_seconds) < 15 %>
+                        <% achievements << "Top 15" %>
+                      <% end %>
+
+                      <% best_overall_result = valid_results.min_by { |r| convert_to_seconds(r.performance) } %>
+                      <% if best_overall_result&.id == result.id %>
+                        <% achievements << "METRO Meet Record" %>
+                      <% end %>
+                    <% end %>
+
+                    <%= achievements.join("; ") if achievements.any? %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

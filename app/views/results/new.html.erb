@@ -1,0 +1,13 @@
+<% content_for :title, "New result" %>
+  <% if logged_in? %>
+
+<h1>New result</h1>
+
+<%= render "form", result: @result %>
+
+<br>
+
+<div>
+  <%= link_to "Back to results", results_path %>
+</div>
+<%end%>

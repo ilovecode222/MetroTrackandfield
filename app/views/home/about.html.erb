@@ -1,2 +1,62 @@
-<h1>Home#about</h1>
-<p>Find me in app/views/home/about.html.erb</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track and Field Information</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .container {
+      margin-top: 30px;
+    }
+    .question {
+      font-weight: bold;
+    }
+    .answer {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Track and Field</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h2>Track and Field Results - Frequently Asked Questions</h2>
+
+    <div class="question">Q1: What is this website about?</div>
+    <div class="answer">This website displays the track and field results and METRO league records.</div>
+
+    <div class="question">Q2: Who made this website?</div>
+    <div class="answer">This website was made by Wesley Schreiber.</div>
+
+    <div class="question">Q3: How do I access today's race results?</div>
+    <div class="answer">
+      Click on "Race Results" in the navigation bar at the top of the page. 
+      Please note that results may not be updated until 24 hours after the meet.
+    </div>
+
+    <div class="question">Q4: How do I access the METRO league records?</div>
+    <div class="answer">
+      Click on "Top 15" in the navigation bar at the top of the page. 
+      Please note that results may not be updated until 24 hours after the meet.
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

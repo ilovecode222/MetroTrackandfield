@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
-  
+  resources :athletes
+  resources :events do
+    collection do
+      get :leaderboard
+    end
+  end
+
+  resources :results do
+    collection do
+      get 'meets'
+    end
+  end
   
   root "home#index"
 
@@ -7,6 +18,8 @@ Rails.application.routes.draw do
   get "home/about"
   get "home/contactus"
   get "home/help"
+  get 'results/meets', to: 'results#meets'
+
 
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
@@ -19,7 +32,4 @@ Rails.application.routes.draw do
   end
 
   resources :users
-
-  #get 'microposts/:id/like' => 'microposts#like', as: :likeAPost
-  
 end

@@ -8,10 +8,7 @@
     <% end %>
 
   </div>
-  <div class="card-body">
-    <p class="card-text"><%= user.email %></p>
-    <span class="badge text-bg-success"><%= pluralize(user.microposts.count,'micropost') %> created!</span>
-  </div>
+
   <div class="card-footer">
     <% if logged_in? && current_user.id==user.id %>
       <%= button_to "DELETE MY ACCOUNT", user, method: :delete, class: "btn btn-danger btn-sm" %>

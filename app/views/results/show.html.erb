@@ -1,0 +1,16 @@
+<% if logged_in? %>
+
+<p style="color: green"><%= notice %></p>
+<%= link_to "Back to results", results_path %>
+
+<%= button_to "Destroy this result", @result, method: :delete, data: { confirm: "Are you sure?" } %>
+<div>
+<%= render @result %>
+
+<div>
+<%= link_to "Create New Result", new_result_path, class: "btn btn-primary" %>
+
+  <%= link_to "Edit this result", edit_result_path(@result) %> |
+
+</div>
+<%end%>
