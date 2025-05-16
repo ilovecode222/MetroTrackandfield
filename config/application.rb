@@ -1,3 +1,5 @@
+ENV["EXECJS_RUNTIME"] = "Node"
+
 puts "Master key length: #{ENV['RAILS_MASTER_KEY']&.length}"
 
 require_relative "boot"
