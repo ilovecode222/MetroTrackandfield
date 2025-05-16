@@ -16,6 +16,9 @@ gem "sprockets-rails"
 # Web server
 gem "puma", ">= 5.0"
 
+gem 'mini_racer', platforms: :ruby
+
+
 # JavaScript with ESM import maps
 gem "importmap-rails"
 
