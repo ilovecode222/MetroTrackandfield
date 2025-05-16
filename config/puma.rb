@@ -24,20 +24,11 @@ threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
 threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-#port_number = ENV.fetch("PORT")  # no default fallback here
-#port port_number
-#puts "Puma listening on port: #{port_number}"
+port_number = ENV.fetch("PORT")  # no default fallback here
+port port_number
+puts "Puma listening on port: #{port_number}"
 
 
-threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
-threads threads_count, threads_count
-
-bind "tcp://0.0.0.0:#{ENV.fetch('PORT')}"
-puts "Puma bound to port #{ENV.fetch('PORT')} on 0.0.0.0"
-
-plugin :tmp_restart
-
-pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 
 
 
