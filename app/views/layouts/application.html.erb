@@ -47,6 +47,8 @@
           <div class="text-end">
             <% if !logged_in? %>
               <a href="<%= login_path %>" class="btn btn-outline-light me-2"><i class="bi bi-pencil-square"></i> Coach Sign In</a>
+                                        <a href="<%= new_user_path %>" class="btn btn-warning my-2"><i class="bi bi-pencil-square"></i> Make New Account</a>
+
             <% else %>
                           <a href="<%= new_user_path %>" class="btn btn-warning my-2"><i class="bi bi-pencil-square"></i> Make New Account</a>
               <a href="<%= user_path current_user %>" class="btn btn-warning my-2"><i class="bi bi-person-badge"></i> <%= current_user.name %></a>

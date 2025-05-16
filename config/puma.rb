@@ -32,7 +32,7 @@ threads threads_count, threads_count
 
 # config/puma.rb
 
-port_number = ENV.fetch("PORT") # no fallback — must be set by Render
+port_number = ENV.fetch("PORT", 3000) # no fallback — must be set by Render
 port port_number
 puts "Puma listening on port: #{port_number}"
 

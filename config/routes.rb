@@ -11,7 +11,10 @@ Rails.application.routes.draw do
       get 'meets'
     end
   end
-  
+  if Rails.env.production?
+  get "/seed_events", to: "seeds#add_events"
+end
+
   root "home#index"
 
   get "home/index"
