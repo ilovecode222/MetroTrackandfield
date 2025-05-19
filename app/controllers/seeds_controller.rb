@@ -5,6 +5,8 @@ class SeedsController < ApplicationController
       "200m Dash",
       "400m Dash",
       "One Mile Run",
+      "Shot Put",
+      "Long Jump",
       "4x100m Relay"
     ]
 
