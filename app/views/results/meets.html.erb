@@ -34,14 +34,17 @@
             <tbody>
 <% sorted_event_results = event_results.sort_by do |result| %>
   <% performance = result.performance %>
-  <% numeric = performance.match(/^\d+(:\d+)?(\.\d+)?$/) %>
+
+  <% numeric_distance = performance.match(/^\d+(\.\d+)?$/) %> <!-- e.g., 5.35 -->
+  <% numeric_time = performance.match(/^\d+(:\d+)?(\.\d+)?$/) %> <!-- e.g., 1:05.32 or 12.42 -->
 
   <% if ["Shot Put", "Long Jump"].include?(result.event.name) %>
-    <% numeric ? -convert_to_seconds(performance) : -Float::INFINITY %> <!-- higher is better -->
+    <% numeric_distance ? -performance.to_f : -Float::INFINITY %> <!-- higher is better -->
   <% else %>
-    <% numeric ? convert_to_seconds(performance) : Float::INFINITY %> <!-- lower is better -->
+    <% numeric_time ? convert_to_seconds(performance) : Float::INFINITY %> <!-- lower is better -->
   <% end %>
 <% end %>
+
 
 
               <% sorted_event_results.each_with_index do |result, index| %>
