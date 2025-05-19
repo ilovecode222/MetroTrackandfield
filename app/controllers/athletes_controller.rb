@@ -20,15 +20,17 @@ class AthletesController < ApplicationController
   end
 
   # POST /athletes
-  def create
-    @athlete = Athlete.new(athlete_params)
+def create
+  @athlete = Athlete.new(athlete_params)
 
-    if @athlete.save
-      redirect_to @athlete, notice: 'Athlete was successfully created.'
-    else
-      render :new
-    end
+  if @athlete.save
+    redirect_to @athlete, notice: 'Athlete was successfully created.'
+  else
+    # important: respond with 422 so Turbo will update form with errors
+    render :new, status: :unprocessable_entity
   end
+end
+
 
   # PATCH/PUT /athletes/1
   def update
