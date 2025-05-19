@@ -77,35 +77,33 @@ end %>
 
                   <td><%= result.performance %></td>
                   <td>
-                    <% achievements = [] %>
+<% achievements = [] %>
 
-                    <% pr = result.athlete.results
-                            .where(event_id: result.event_id)
-                            .minimum(:performance) == result.performance %>
-                    <% achievements << "PR" if pr %>
+<% current_perf = result.performance.strip %>
+<% event_name = result.event.name %>
+<% is_field_event = ["Shot Put", "Long Jump"].include?(event_name) %>
 
-                    <% # Only include numeric performances in calculations %>
-                    <% current_perf = result.performance %>
-                    <% numeric_perf = current_perf.match(/^\d+(:\d+)?(\.\d+)?$/) %>
+<% is_numeric = is_field_event ? current_perf.match(/^\d+(\.\d+)?$/) : current_perf.match(/^\d+(:\d+)?(\.\d+)?$/) %>
 
-                    <% if numeric_perf %>
-                      <% current_seconds = convert_to_seconds(current_perf) %>
+<% if is_numeric %>
+  <% current_value = is_field_event ? current_perf.to_f : convert_to_seconds(current_perf) %>
 
-                      <% all_event_results = Result.where(event_id: result.event_id).includes(:athlete) %>
-                      <% valid_results = all_event_results.select { |r| r.performance.match(/^\d+(:\d+)?(\.\d+)?$/) } %>
-                      <% all_seconds = valid_results.map { |r| convert_to_seconds(r.performance) }.sort %>
+  <% all_event_results = Result.where(event_id: result.event_id).includes(:athlete) %>
+  <% valid_results = all_event_results.select { |r| r.performance.present? && r.performance.strip.match(is_field_event ? /^\d+(\.\d+)?$/ : /^\d+(:\d+)?(\.\d+)?$/) } %>
+  <% all_values = valid_results.map { |r| is_field_event ? r.performance.strip.to_f : convert_to_seconds(r.performance.strip) }.sort_by { |v| is_field_event ? -v : v } %>
 
-                      <% if all_seconds.index(current_seconds) && all_seconds.index(current_seconds) < 15 %>
-                        <% achievements << "Top 15" %>
-                      <% end %>
+  <% athlete_event_results = result.athlete.results.where(event_id: result.event_id).select { |r| r.performance.present? && r.performance.strip.match(is_field_event ? /^\d+(\.\d+)?$/ : /^\d+(:\d+)?(\.\d+)?$/) } %>
+  <% best_perf = athlete_event_results.map { |r| is_field_event ? r.performance.strip.to_f : convert_to_seconds(r.performance.strip) }.send(is_field_event ? :max : :min) %>
+  <% achievements << "PR" if best_perf == current_value %>
 
-                      <% best_overall_result = valid_results.min_by { |r| convert_to_seconds(r.performance) } %>
-                      <% if best_overall_result&.id == result.id %>
-                        <% achievements << "METRO Meet Record" %>
-                      <% end %>
-                    <% end %>
+  <% achievements << "Top 15" if all_values.index(current_value) && all_values.index(current_value) < 15 %>
 
-                    <%= achievements.join("; ") if achievements.any? %>
+  <% best_result = valid_results.send(is_field_event ? :max_by : :min_by) { |r| is_field_event ? r.performance.strip.to_f : convert_to_seconds(r.performance.strip) } %>
+  <% achievements << "METRO Meet Record" if best_result&.id == result.id %>
+<% end %>
+
+<%= achievements.join("; ") if achievements.any? %>
+
                   </td>
                 </tr>
               <% end %>
