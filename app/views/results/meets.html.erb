@@ -37,10 +37,10 @@
   <% event_name = result.event.name %>
 
   <% if ["Shot Put", "Long Jump"].include?(event_name) %>
-    # For distance events: treat as float (e.g., 5.3 meters), higher is better
+    This event will be ranked from lowest mark to highest mark.
     <% performance.match(/^\d+(\.\d+)?$/) ? -performance.to_f : -Float::INFINITY %>
   <% else %>
-    # For timed events: use convert_to_seconds, lower is better
+    This event will be ranked from highest mark to lowest mark.
     <% performance.match(/^(\d+:)?\d+(\.\d+)?$/) ? convert_to_seconds(performance) : Float::INFINITY %>
   <% end %>
 <% end %>
