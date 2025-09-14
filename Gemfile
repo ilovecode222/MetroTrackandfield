@@ -8,7 +8,7 @@ gem "rails", "~> 7.2.2", ">= 7.2.2.1"
 gem "pg", "~> 1.4"
 
 # For encrypting passwords
-gem "bcrypt", "3.1.18"
+gem "bcrypt", "3.1.20"
 
 # The original asset pipeline for Rails
 gem "sprockets-rails"
